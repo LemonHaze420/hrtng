@@ -329,7 +329,11 @@ bool renameVar(ea_t refea, cfunc_t *func, ssize_t varIdx, const qstring* name, v
 		//msg("[hrt] FIXME: renameVar(%a, \"%s\") not accepted\n", refea, newName.c_str());
 		return false;
 	}
-
+	
+	// if we don't already have a global with this name, then we can rename it
+	if (get_name_ea(BADADDR, newName.c_str()) != BADADDR)
+		return false;
+	
 	//if var is arg it will be useful to rename argument inside function prototype
 	if(var->is_arg_var()) {
 		int vIdx = (int)varIdx;
